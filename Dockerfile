@@ -18,8 +18,7 @@ RUN ln -s /opt/bin/node /usr/local/bin/node && \
     ln -s /opt/bin/npm /usr/local/bin/npm && \
     ln -s /opt/bin/npx /usr/local/bin/npx && \
     apk upgrade --update && \
-    apk add --no-cache --virtual .build-deps bash cmake gcc g++ git R-dev curl && \ 
-            libuv-dev linux-headers  libgcc python3 \
+    apk add --no-cache --virtual .build-deps bash cmake gcc g++ git R-dev curl python3 && \
     apk add --no-cache libstdc++ && \
     ln -s $(which python3) /usr/bin/python && \
     python -m ensurepip && pip3 install --upgrade pip && \
