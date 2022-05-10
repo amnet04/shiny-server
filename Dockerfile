@@ -30,6 +30,6 @@ RUN mkdir /src && cd /src && \
     git clone https://github.com/velaco/shiny-server.git && \
     cd shiny-server && mkdir tmp && cd tmp && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local ../ && \
-    make && mkdir ../build #&& \
+    make && mkdir ../build && \
     (cd .. && npm --python="/usr/bin/python" --nodedir=/opt install) && \
     make install
