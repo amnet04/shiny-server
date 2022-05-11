@@ -1,119 +1,46 @@
-Sending build context to Docker daemon  139.3kB
-Step 1/3 : FROM rhub/r-minimal:4.0.5
+Sending build context to Docker daemon  159.2kB
+Step 1/7 : FROM rhub/r-minimal:4.0.5
  ---> 2796ae448661
-Step 2/3 : RUN   apk upgrade --update &&     apk add --no-cache --virtual .build-deps bash cmake gcc g++ git R-dev curl python3 &&     apk add --no-cache libstdc++ &&     ln -s $(which python3) /usr/bin/python &&     python -m ensurepip && pip3 install --upgrade pip &&     installr -d -t "libsodium-dev curl-dev linux-headers autoconf automake"              -a libsodium shiny &&     DOWNLOAD_STATIC_LIBV8=1 installr  -c V8 &&     mkdir /src && cd /src &&     git clone https://github.com/velaco/shiny-server.git
- ---> Running in f253b3004e06
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/main/x86_64/APKINDEX.tar.gz
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86_64/APKINDEX.tar.gz
-(1/9) Upgrading busybox (1.33.1-r6 -> 1.33.1-r7)
-Executing busybox-1.33.1-r7.post-upgrade
-(2/9) Upgrading libcrypto1.1 (1.1.1l-r0 -> 1.1.1n-r0)
-(3/9) Upgrading libssl1.1 (1.1.1l-r0 -> 1.1.1n-r0)
-(4/9) Upgrading ca-certificates-bundle (20191127-r5 -> 20211220-r0)
-(5/9) Upgrading libretls (3.3.3p1-r2 -> 3.3.3p1-r3)
-(6/9) Upgrading ssl_client (1.33.1-r6 -> 1.33.1-r7)
-(7/9) Upgrading zlib (1.2.11-r3 -> 1.2.12-r1)
-(8/9) Upgrading libcurl (7.79.1-r0 -> 7.79.1-r1)
-(9/9) Upgrading xz-libs (5.2.5-r0 -> 5.2.5-r1)
-Executing busybox-1.33.1-r7.trigger
-Executing ca-certificates-20211220-r0.trigger
-OK: 16 MiB in 32 packages
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/main/x86_64/APKINDEX.tar.gz
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86_64/APKINDEX.tar.gz
-(1/55) Installing libacl (2.2.53-r0)
-(2/55) Installing expat (2.4.7-r0)
-(3/55) Installing lz4-libs (1.9.3-r1)
-(4/55) Installing zstd-libs (1.4.9-r1)
-(5/55) Installing libarchive (3.5.3-r0)
-(6/55) Installing rhash-libs (1.4.1-r0)
-(7/55) Installing libuv (1.41.0-r0)
-(8/55) Installing cmake (3.20.3-r0)
-(9/55) Installing binutils (2.35.2-r2)
-(10/55) Installing libgomp (10.3.1_git20210424-r2)
-(11/55) Installing libatomic (10.3.1_git20210424-r2)
-(12/55) Installing libgphobos (10.3.1_git20210424-r2)
-(13/55) Installing gmp (6.2.1-r1)
-(14/55) Installing isl22 (0.22-r0)
-(15/55) Installing mpfr4 (4.1.0-r0)
-(16/55) Installing mpc1 (1.2.1-r0)
-(17/55) Installing gcc (10.3.1_git20210424-r2)
-(18/55) Installing musl-dev (1.2.2-r3)
-(19/55) Installing libc-dev (0.7.2-r3)
-(20/55) Installing g++ (10.3.1_git20210424-r2)
-(21/55) Installing git (2.32.1-r0)
-(22/55) Installing gfortran (10.3.1_git20210424-r2)
-(23/55) Installing icu-libs (67.1-r2)
-(24/55) Installing icu (67.1-r2)
-(25/55) Installing pkgconf (1.7.4-r0)
-(26/55) Installing icu-dev (67.1-r2)
-(27/55) Installing libjpeg-turbo (2.1.0-r0)
-(28/55) Installing libpng (1.6.37-r1)
-(29/55) Installing zlib-dev (1.2.12-r1)
-(30/55) Installing libpng-dev (1.6.37-r1)
-(31/55) Installing openblas-ilp64 (0.3.15-r0)
-(32/55) Installing openblas (0.3.15-r0)
-(33/55) Installing openblas-dev (0.3.15-r0)
-(34/55) Installing ncurses-dev (6.2_p20210612-r0)
-(35/55) Installing libedit (20210216.3.1-r0)
-(36/55) Installing libedit-dev (20210216.3.1-r0)
-(37/55) Installing libpcre2-16 (10.36-r0)
-(38/55) Installing libpcre2-32 (10.36-r0)
-(39/55) Installing pcre2-dev (10.36-r0)
-(40/55) Installing libhistory (8.1.0-r0)
-(41/55) Installing readline-dev (8.1.0-r0)
-(42/55) Installing xz-dev (5.2.5-r1)
-(43/55) Installing bzip2-dev (1.0.8-r1)
-(44/55) Installing openssl-dev (1.1.1n-r0)
-(45/55) Installing nghttp2-dev (1.43.0-r0)
-(46/55) Installing brotli-dev (1.0.9-r5)
-(47/55) Installing curl-dev (7.79.1-r1)
-(48/55) Installing R-dev (4.1.0-r0)
-(49/55) Installing curl (7.79.1-r1)
-(50/55) Installing libffi (3.3-r2)
-(51/55) Installing gdbm (1.19-r0)
-(52/55) Installing mpdecimal (2.5.1-r1)
-(53/55) Installing sqlite-libs (3.35.5-r0)
-(54/55) Installing python3 (3.9.5-r2)
-(55/55) Installing .build-deps (20220511.200304)
-Executing busybox-1.33.1-r7.trigger
-OK: 442 MiB in 87 packages
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/main/x86_64/APKINDEX.tar.gz
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86_64/APKINDEX.tar.gz
-OK: 442 MiB in 87 packages
-Looking in links: /tmp/tmpx_xv06gl
-Processing /tmp/tmpx_xv06gl/setuptools-56.0.0-py3-none-any.whl
-Processing /tmp/tmpx_xv06gl/pip-21.1.1-py3-none-any.whl
-Installing collected packages: setuptools, pip
-Successfully installed pip-21.1.1 setuptools-56.0.0
-[91mWARNING: Running pip as root will break packages and permissions. You should install packages reliably by using venv: https://pip.pypa.io/warnings/venv
-[0mRequirement already satisfied: pip in /usr/lib/python3.9/site-packages (21.1.1)
-Collecting pip
-  Downloading pip-22.1-py3-none-any.whl (2.1 MB)
-Installing collected packages: pip
-  Attempting uninstall: pip
-    Found existing installation: pip 21.1.1
-    Uninstalling pip-21.1.1:
-      Successfully uninstalled pip-21.1.1
-Successfully installed pip-22.1
-[91mWARNING: Running pip as root will break packages and permissions. You should install packages reliably by using venv: https://pip.pypa.io/warnings/venv
-[0m
+Step 2/7 : RUN installr -d -t "libsodium-dev curl-dev linux-headers autoconf automake"              -a libsodium shiny &&     DOWNLOAD_STATIC_LIBV8=1 installr  -c V8
+ ---> Running in f76bf1d0d292
+
 --------------------------------------
 Adding libsodium
 Temporarily adding libsodium-dev curl-dev linux-headers autoconf automake gcc musl-dev g++
 fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/main/x86_64/APKINDEX.tar.gz
 fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86_64/APKINDEX.tar.gz
-(1/10) Installing m4 (1.4.18-r2)
-(2/10) Installing perl (5.32.1-r0)
-(3/10) Installing perl-error (0.17029-r1)
-(4/10) Installing perl-git (2.32.1-r0)
-(5/10) Installing git-perl (2.32.1-r0)
-(6/10) Installing autoconf (2.71-r0)
-(7/10) Installing automake (1.16.3-r0)
-(8/10) Installing libsodium (1.0.18-r0)
-(9/10) Installing libsodium-dev (1.0.18-r0)
-(10/10) Installing linux-headers (5.10.41-r0)
-Executing busybox-1.33.1-r7.trigger
-OK: 492 MiB in 97 packages
+(1/29) Upgrading libcrypto1.1 (1.1.1l-r0 -> 1.1.1n-r0)
+(2/29) Upgrading libssl1.1 (1.1.1l-r0 -> 1.1.1n-r0)
+(3/29) Upgrading zlib (1.2.11-r3 -> 1.2.12-r1)
+(4/29) Installing m4 (1.4.18-r2)
+(5/29) Installing perl (5.32.1-r0)
+(6/29) Installing autoconf (2.71-r0)
+(7/29) Installing automake (1.16.3-r0)
+(8/29) Installing pkgconf (1.7.4-r0)
+(9/29) Installing openssl-dev (1.1.1n-r0)
+(10/29) Installing nghttp2-dev (1.43.0-r0)
+(11/29) Installing zlib-dev (1.2.12-r1)
+(12/29) Installing brotli-dev (1.0.9-r5)
+(13/29) Upgrading libcurl (7.79.1-r0 -> 7.79.1-r1)
+(14/29) Installing curl-dev (7.79.1-r1)
+(15/29) Installing binutils (2.35.2-r2)
+(16/29) Installing libgomp (10.3.1_git20210424-r2)
+(17/29) Installing libatomic (10.3.1_git20210424-r2)
+(18/29) Installing libgphobos (10.3.1_git20210424-r2)
+(19/29) Installing gmp (6.2.1-r1)
+(20/29) Installing isl22 (0.22-r0)
+(21/29) Installing mpfr4 (4.1.0-r0)
+(22/29) Installing mpc1 (1.2.1-r0)
+(23/29) Installing gcc (10.3.1_git20210424-r2)
+(24/29) Installing musl-dev (1.2.2-r3)
+(25/29) Installing libc-dev (0.7.2-r3)
+(26/29) Installing g++ (10.3.1_git20210424-r2)
+(27/29) Installing libsodium (1.0.18-r0)
+(28/29) Installing libsodium-dev (1.0.18-r0)
+(29/29) Installing linux-headers (5.10.41-r0)
+Executing busybox-1.33.1-r6.trigger
+Executing ca-certificates-20211220-r0.trigger
+OK: 249 MiB in 57 packages
 
 --------------------------------------
 Installing pak (if needed)
@@ -126,7 +53,7 @@ downloaded 7.3 MB
 [0m[91m* DONE (pak)
 [0m[91m
 The downloaded source packages are in
-	‘/tmp/RtmpJcjBdd/downloaded_packages’
+	‘/tmp/RtmpoeGOjI/downloaded_packages’
 [0m[91mUpdating HTML index of packages in '.Library'
 [0m[91mMaking 'packages.html' ...[0m[91m done
 [0m
@@ -173,32 +100,32 @@ Installing shiny
 [0m[91mℹ Getting 29 pkgs (24.99 MB)
 [0m[91m✔ Got base64enc 0.1-3 (source) (7.83 kB)
 [0m[91m✔ Got cachem 1.0.6 (source) (25.41 kB)
-[0m[91m✔ Got fastmap 1.1.0 (source) (44.28 kB)
 [0m[91m✔ Got ellipsis 0.3.2 (source) (8.07 kB)
 [0m[91m✔ Got glue 1.6.2 (source) (106.51 kB)
+[0m[91m✔ Got htmltools 0.5.2 (source) (124.51 kB)
+[0m[91m✔ Got jquerylib 0.1.4 (source) (520.21 kB)
 [0m[91m✔ Got later 1.3.0 (source) (63.78 kB)
-[0m[91m✔ Got lifecycle 1.0.1 (source) (99.72 kB)
 [0m[91m✔ Got fs 1.5.2 (source) (793.63 kB)
+[0m[91m✔ Got lifecycle 1.0.1 (source) (99.72 kB)
 [0m[91m✔ Got mime 0.12 (source) (12.56 kB)
 [0m[91m✔ Got fontawesome 0.2.2 (source) (1.12 MB)
-[0m[91m✔ Got R6 2.5.1 (source) (63.42 kB)
 [0m[91m✔ Got magrittr 2.0.3 (source) (267.07 kB)
+[0m[91m✔ Got R6 2.5.1 (source) (63.42 kB)
 [0m[91m✔ Got rappdirs 0.3.3 (source) (12.29 kB)
 [0m[91m✔ Got jsonlite 1.8.0 (source) (1.05 MB)
-[0m[91m✔ Got rlang 1.0.2 (source) (724.83 kB)
 [0m[91m✔ Got httpuv 1.6.5 (source) (1.82 MB)
+[0m[91m✔ Got bslib 0.3.1 (source) (4.91 MB)
 [0m[91m✔ Got sourcetools 0.1.7 (source) (24.16 kB)
 [0m[91m✔ Got withr 2.5.0 (source) (102.09 kB)
-[0m[91m✔ Got xtable 1.8-4 (source) (564.59 kB)
+[0m[91m✔ Got rlang 1.0.2 (source) (724.83 kB)
 [0m[91m✔ Got commonmark 1.8.0 (source) (139.48 kB)
 [0m[91m✔ Got crayon 1.5.1 (source) (40.18 kB)
+[0m[91m✔ Got xtable 1.8-4 (source) (564.59 kB)
 [0m[91m✔ Got digest 0.6.29 (source) (162.78 kB)
-[0m[91m✔ Got htmltools 0.5.2 (source) (124.51 kB)
-[0m[91m✔ Got promises 1.2.0.1 (source) (3.12 MB)
-[0m[91m✔ Got bslib 0.3.1 (source) (4.91 MB)
-[0m[91m✔ Got jquerylib 0.1.4 (source) (520.21 kB)
-[0m[91m✔ Got sass 0.4.1 (source) (3.02 MB)
+[0m[91m✔ Got fastmap 1.1.0 (source) (44.28 kB)
 [0m[91m✔ Got Rcpp 1.0.8.3 (source) (3.09 MB)
+[0m[91m✔ Got sass 0.4.1 (source) (3.02 MB)
+[0m[91m✔ Got promises 1.2.0.1 (source) (3.12 MB)
 [0m[91m✔ Got shiny 1.7.1 (source) (2.96 MB)
 [0m[91mℹ Building base64enc 0.1-3
 [0m[91mℹ Building commonmark 1.8.0
@@ -208,73 +135,73 @@ Installing shiny
 [0m[91mℹ Building fs 1.5.2
 [0m[91mℹ Building glue 1.6.2
 [0m[91mℹ Building jsonlite 1.8.0
-[0m[91m✔ Built base64enc 0.1-3 (7.7s)
+[0m[91m✔ Built base64enc 0.1-3 (7.8s)
 [0m[91mℹ Building magrittr 2.0.3
-[0m[91m✔ Built glue 1.6.2 (14.1s)
+[0m[91m✔ Built glue 1.6.2 (10s)
 [0m[91mℹ Building mime 0.12
-[0m[91m✔ Built fastmap 1.1.0 (16.6s)
+[0m[91m✔ Built crayon 1.5.1 (12.5s)
 [0m[91mℹ Building R6 2.5.1
-[0m[91m✔ Built crayon 1.5.1 (17.1s)
+[0m[91m✔ Built fastmap 1.1.0 (13s)
 [0m[91mℹ Building rappdirs 0.3.3
-[0m[91m✔ Built magrittr 2.0.3 (9.5s)
+[0m[91m✔ Built magrittr 2.0.3 (6.2s)
 [0m[91mℹ Building Rcpp 1.0.8.3
-[0m[91m✔ Built mime 0.12 (5.4s)
+[0m[91m✔ Built mime 0.12 (8.1s)
 [0m[91mℹ Building rlang 1.0.2
-[0m[91m✔ Built rappdirs 0.3.3 (3.8s)
+[0m[91m✔ Built jsonlite 1.8.0 (21.6s)
 [0m[91mℹ Building sourcetools 0.1.7
-[0m[91m✔ Built jsonlite 1.8.0 (20.8s)
+[0m[91m✔ Built digest 0.6.29 (22.3s)
 [0m[91mℹ Building withr 2.5.0
-[0m[91m✔ Built R6 2.5.1 (4.4s)
+[0m[91m✔ Built rappdirs 0.3.3 (8.9s)
 [0m[91mℹ Building xtable 1.8-4
-[0m[91m✔ Built digest 0.6.29 (21.6s)
-[0m[91m✔ Installed base64enc 0.1-3  (370ms)
-[0m[91m✔ Installed crayon 1.5.1  (208ms)
-[0m[91m✔ Installed digest 0.6.29  (397ms)
-[0m[91m✔ Built commonmark 1.8.0 (23.8s)
-[0m[91m✔ Installed fastmap 1.1.0  (399ms)
-[0m[91m✔ Installed commonmark 1.8.0  (558ms)
-[0m[91m✔ Installed glue 1.6.2  (579ms)
-[0m[91m✔ Installed jsonlite 1.8.0  (620ms)
-[0m[91m✔ Installed magrittr 2.0.3  (626ms)
-[0m[91m✔ Installed mime 0.12  (714ms)
-[0m[91m✔ Installed R6 2.5.1  (750ms)
-[0m[91m✔ Installed rappdirs 0.3.3  (352ms)
-[0m[91m✔ Built withr 2.5.0 (14.2s)
-[0m[91m✔ Installed withr 2.5.0  (177ms)
-[0m[91m✔ Built sourcetools 0.1.7 (15.1s)
-[0m[91m✔ Installed sourcetools 0.1.7  (76ms)
-[0m[91m✔ Built xtable 1.8-4 (15.2s)
-[0m[91m✔ Installed xtable 1.8-4  (341ms)
-[0m[91m✔ Built rlang 1.0.2 (34.5s)
-[0m[91m✔ Installed rlang 1.0.2  (71ms)
+[0m[91m✔ Built R6 2.5.1 (9.7s)
+[0m[91m✔ Installed base64enc 0.1-3  (113ms)
+[0m[91m✔ Built commonmark 1.8.0 (23.2s)
+[0m[91m✔ Installed crayon 1.5.1  (171ms)
+[0m[91m✔ Installed commonmark 1.8.0  (320ms)
+[0m[91m✔ Installed digest 0.6.29  (320ms)
+[0m[91m✔ Installed fastmap 1.1.0  (237ms)
+[0m[91m✔ Installed glue 1.6.2  (448ms)
+[0m[91m✔ Installed jsonlite 1.8.0  (566ms)
+[0m[91m✔ Installed magrittr 2.0.3  (279ms)
+[0m[91m✔ Installed mime 0.12  (278ms)
+[0m[91m✔ Installed R6 2.5.1  (355ms)
+[0m[91m✔ Installed rappdirs 0.3.3  (319ms)
+[0m[91m✔ Built withr 2.5.0 (6.4s)
+[0m[91m✔ Installed withr 2.5.0  (68ms)
+[0m[91m✔ Built xtable 1.8-4 (6.6s)
+[0m[91m✔ Installed xtable 1.8-4  (404ms)
+[0m[91m✔ Built sourcetools 0.1.7 (7.6s)
+[0m[91m✔ Installed sourcetools 0.1.7  (66ms)
+[0m[91m✔ Built rlang 1.0.2 (34.6s)
+[0m[91m✔ Installed rlang 1.0.2  (86ms)
 [0m[91mℹ Building cachem 1.0.6
 [0m[91mℹ Building ellipsis 0.3.2
 [0m[91mℹ Building htmltools 0.5.2
 [0m[91mℹ Building lifecycle 1.0.1
-[0m[91m✔ Built fs 1.5.2 (57.6s)
-[0m[91m✔ Installed fs 1.5.2  (130ms)
-[0m[91m✔ Built ellipsis 0.3.2 (4.3s)
-[0m[91m✔ Installed ellipsis 0.3.2  (162ms)
-[0m[91m✔ Built cachem 1.0.6 (7.4s)
-[0m[91m✔ Installed cachem 1.0.6  (71ms)
-[0m[91m✔ Built lifecycle 1.0.1 (7.6s)
-[0m[91m✔ Installed lifecycle 1.0.1  (129ms)
-[0m[91m✔ Built htmltools 0.5.2 (12.5s)
-[0m[91m✔ Installed htmltools 0.5.2  (105ms)
+[0m[91m✔ Built ellipsis 0.3.2 (3.7s)
+[0m[91m✔ Installed ellipsis 0.3.2  (68ms)
+[0m[91m✔ Built cachem 1.0.6 (5s)
+[0m[91m✔ Installed cachem 1.0.6  (62ms)
+[0m[91m✔ Built lifecycle 1.0.1 (5s)
+[0m[91m✔ Installed lifecycle 1.0.1  (67ms)
+[0m[91m✔ Built htmltools 0.5.2 (10.4s)
+[0m[91m✔ Installed htmltools 0.5.2  (101ms)
 [0m[91mℹ Building fontawesome 0.2.2
 [0m[91mℹ Building jquerylib 0.1.4
+[0m[91m✔ Built fs 1.5.2 (1m 5.2s)
+[0m[91m✔ Installed fs 1.5.2  (67ms)
 [0m[91mℹ Building sass 0.4.1
-[0m[91m✔ Built jquerylib 0.1.4 (3.3s)
-[0m[91m✔ Installed jquerylib 0.1.4  (84ms)
+[0m[91m✔ Built jquerylib 0.1.4 (3.4s)
+[0m[91m✔ Installed jquerylib 0.1.4  (82ms)
 [0m[91m✔ Built fontawesome 0.2.2 (4.8s)
-[0m[91m✔ Installed fontawesome 0.2.2  (73ms)
-[0m[91m✔ Built Rcpp 1.0.8.3 (56.7s)
-[0m[91m✔ Installed Rcpp 1.0.8.3  (139ms)
+[0m[91m✔ Installed fontawesome 0.2.2  (125ms)
+[0m[91m✔ Built Rcpp 1.0.8.3 (55.6s)
+[0m[91m✔ Installed Rcpp 1.0.8.3  (169ms)
 [0m[91mℹ Building later 1.3.0
-[0m[91m✔ Built later 1.3.0 (34s)
-[0m[91m✔ Installed later 1.3.0  (130ms)
+[0m[91m✔ Built later 1.3.0 (27s)
+[0m[91m✔ Installed later 1.3.0  (52ms)
 [0m[91mℹ Building promises 1.2.0.1
-[0m[91m✔ Built promises 1.2.0.1 (25.7s)
-[0m[91m✔ Installed promises 1.2.0.1  (75ms)
+[0m[91m✔ Built promises 1.2.0.1 (24.3s)
+[0m[91m✔ Installed promises 1.2.0.1  (78ms)
 [0m[91mℹ Building httpuv 1.6.5
 [0m
