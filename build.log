@@ -1,10 +1,8 @@
-Sending build context to Docker daemon  94.72kB
-Step 1/4 : FROM rhub/r-minimal:4.0.5
+Sending build context to Docker daemon  139.3kB
+Step 1/3 : FROM rhub/r-minimal:4.0.5
  ---> 2796ae448661
-Step 2/4 : COPY --from=amnet04/node8x:0.1  /opt /opt
- ---> ed679b3ad388
-Step 3/4 : RUN ln -s /opt/bin/node /usr/local/bin/node &&     ln -s /opt/bin/npm /usr/local/bin/npm &&     ln -s /opt/bin/npx /usr/local/bin/npx &&     apk upgrade --update &&     apk add --no-cache --virtual .build-deps bash cmake gcc g++ git R-dev curl python3 &&     apk add --no-cache libstdc++ &&     ln -s $(which python3) /usr/bin/python &&     python -m ensurepip && pip3 install --upgrade pip &&     installr -d -t "libsodium-dev curl-dev linux-headers autoconf automake"              -a libsodium shiny &&     DOWNLOAD_STATIC_LIBV8=1 installr  -c V8
- ---> Running in 241c027724e6
+Step 2/3 : RUN   apk upgrade --update &&     apk add --no-cache --virtual .build-deps bash cmake gcc g++ git R-dev curl python3 &&     apk add --no-cache libstdc++ &&     ln -s $(which python3) /usr/bin/python &&     python -m ensurepip && pip3 install --upgrade pip &&     installr -d -t "libsodium-dev curl-dev linux-headers autoconf automake"              -a libsodium shiny &&     DOWNLOAD_STATIC_LIBV8=1 installr  -c V8 &&     mkdir /src && cd /src &&     git clone https://github.com/velaco/shiny-server.git
+ ---> Running in f253b3004e06
 fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/main/x86_64/APKINDEX.tar.gz
 fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86_64/APKINDEX.tar.gz
 (1/9) Upgrading busybox (1.33.1-r6 -> 1.33.1-r7)
@@ -76,27 +74,27 @@ fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86_64/APKINDEX.tar.
 (52/55) Installing mpdecimal (2.5.1-r1)
 (53/55) Installing sqlite-libs (3.35.5-r0)
 (54/55) Installing python3 (3.9.5-r2)
-(55/55) Installing .build-deps (20220510.052428)
+(55/55) Installing .build-deps (20220511.200304)
 Executing busybox-1.33.1-r7.trigger
 OK: 442 MiB in 87 packages
 fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/main/x86_64/APKINDEX.tar.gz
 fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86_64/APKINDEX.tar.gz
 OK: 442 MiB in 87 packages
-Looking in links: /tmp/tmpq2palp1b
-Processing /tmp/tmpq2palp1b/setuptools-56.0.0-py3-none-any.whl
-Processing /tmp/tmpq2palp1b/pip-21.1.1-py3-none-any.whl
+Looking in links: /tmp/tmpx_xv06gl
+Processing /tmp/tmpx_xv06gl/setuptools-56.0.0-py3-none-any.whl
+Processing /tmp/tmpx_xv06gl/pip-21.1.1-py3-none-any.whl
 Installing collected packages: setuptools, pip
 Successfully installed pip-21.1.1 setuptools-56.0.0
 [91mWARNING: Running pip as root will break packages and permissions. You should install packages reliably by using venv: https://pip.pypa.io/warnings/venv
 [0mRequirement already satisfied: pip in /usr/lib/python3.9/site-packages (21.1.1)
 Collecting pip
-  Downloading pip-22.0.4-py3-none-any.whl (2.1 MB)
+  Downloading pip-22.1-py3-none-any.whl (2.1 MB)
 Installing collected packages: pip
   Attempting uninstall: pip
     Found existing installation: pip 21.1.1
     Uninstalling pip-21.1.1:
       Successfully uninstalled pip-21.1.1
-Successfully installed pip-22.0.4
+Successfully installed pip-22.1
 [91mWARNING: Running pip as root will break packages and permissions. You should install packages reliably by using venv: https://pip.pypa.io/warnings/venv
 [0m
 --------------------------------------
@@ -120,7 +118,7 @@ OK: 492 MiB in 97 packages
 --------------------------------------
 Installing pak (if needed)
 [91mtrying URL 'https://r-lib.github.io/p/pak/devel/source/linux-musl/x86_64/src/contrib/../../../../../linux/x86_64/pak_0.3.0.9000_R-4-0_x86_64-linux.tar.gz'
-[0m[91mContent type 'application/gzip' length 7644280 bytes (7.3 MB)
+[0m[91mContent type 'application/gzip' length 7645276 bytes (7.3 MB)
 [0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=
 downloaded 7.3 MB
 
@@ -128,14 +126,14 @@ downloaded 7.3 MB
 [0m[91m* DONE (pak)
 [0m[91m
 The downloaded source packages are in
-	‘/tmp/RtmpNfmDlh/downloaded_packages’
+	‘/tmp/RtmpJcjBdd/downloaded_packages’
 [0m[91mUpdating HTML index of packages in '.Library'
 [0m[91mMaking 'packages.html' ...[0m[91m done
 [0m
 --------------------------------------
 Installing shiny
 [91m
-[0m[91m✔ Updated metadata database: 2.58 MB in 6 files.
+[0m[91m✔ Updated metadata database: 2.57 MB in 6 files.
 [0m[91m
 [0m[91mℹ Updating metadata database
 [0m[91m✔ Updating metadata database ... done
@@ -175,33 +173,33 @@ Installing shiny
 [0m[91mℹ Getting 29 pkgs (24.99 MB)
 [0m[91m✔ Got base64enc 0.1-3 (source) (7.83 kB)
 [0m[91m✔ Got cachem 1.0.6 (source) (25.41 kB)
+[0m[91m✔ Got fastmap 1.1.0 (source) (44.28 kB)
 [0m[91m✔ Got ellipsis 0.3.2 (source) (8.07 kB)
 [0m[91m✔ Got glue 1.6.2 (source) (106.51 kB)
-[0m[91m✔ Got htmltools 0.5.2 (source) (124.51 kB)
-[0m[91m✔ Got fastmap 1.1.0 (source) (44.28 kB)
-[0m[91m✔ Got fontawesome 0.2.2 (source) (1.12 MB)
-[0m[91m✔ Got magrittr 2.0.3 (source) (267.07 kB)
-[0m[91m✔ Got mime 0.12 (source) (12.56 kB)
 [0m[91m✔ Got later 1.3.0 (source) (63.78 kB)
-[0m[91m✔ Got R6 2.5.1 (source) (63.42 kB)
-[0m[91m✔ Got jquerylib 0.1.4 (source) (520.21 kB)
-[0m[91m✔ Got httpuv 1.6.5 (source) (1.82 MB)
-[0m[91m✔ Got sourcetools 0.1.7 (source) (24.16 kB)
-[0m[91m✔ Got commonmark 1.8.0 (source) (139.48 kB)
-[0m[91m✔ Got bslib 0.3.1 (source) (4.91 MB)
-[0m[91m✔ Got fs 1.5.2 (source) (793.63 kB)
-[0m[91m✔ Got shiny 1.7.1 (source) (2.96 MB)
-[0m[91m✔ Got rappdirs 0.3.3 (source) (12.29 kB)
 [0m[91m✔ Got lifecycle 1.0.1 (source) (99.72 kB)
-[0m[91m✔ Got xtable 1.8-4 (source) (564.59 kB)
-[0m[91m✔ Got crayon 1.5.1 (source) (40.18 kB)
-[0m[91m✔ Got digest 0.6.29 (source) (162.78 kB)
-[0m[91m✔ Got withr 2.5.0 (source) (102.09 kB)
+[0m[91m✔ Got fs 1.5.2 (source) (793.63 kB)
+[0m[91m✔ Got mime 0.12 (source) (12.56 kB)
+[0m[91m✔ Got fontawesome 0.2.2 (source) (1.12 MB)
+[0m[91m✔ Got R6 2.5.1 (source) (63.42 kB)
+[0m[91m✔ Got magrittr 2.0.3 (source) (267.07 kB)
+[0m[91m✔ Got rappdirs 0.3.3 (source) (12.29 kB)
 [0m[91m✔ Got jsonlite 1.8.0 (source) (1.05 MB)
 [0m[91m✔ Got rlang 1.0.2 (source) (724.83 kB)
-[0m[91m✔ Got Rcpp 1.0.8.3 (source) (3.09 MB)
-[0m[91m✔ Got sass 0.4.1 (source) (3.02 MB)
+[0m[91m✔ Got httpuv 1.6.5 (source) (1.82 MB)
+[0m[91m✔ Got sourcetools 0.1.7 (source) (24.16 kB)
+[0m[91m✔ Got withr 2.5.0 (source) (102.09 kB)
+[0m[91m✔ Got xtable 1.8-4 (source) (564.59 kB)
+[0m[91m✔ Got commonmark 1.8.0 (source) (139.48 kB)
+[0m[91m✔ Got crayon 1.5.1 (source) (40.18 kB)
+[0m[91m✔ Got digest 0.6.29 (source) (162.78 kB)
+[0m[91m✔ Got htmltools 0.5.2 (source) (124.51 kB)
 [0m[91m✔ Got promises 1.2.0.1 (source) (3.12 MB)
+[0m[91m✔ Got bslib 0.3.1 (source) (4.91 MB)
+[0m[91m✔ Got jquerylib 0.1.4 (source) (520.21 kB)
+[0m[91m✔ Got sass 0.4.1 (source) (3.02 MB)
+[0m[91m✔ Got Rcpp 1.0.8.3 (source) (3.09 MB)
+[0m[91m✔ Got shiny 1.7.1 (source) (2.96 MB)
 [0m[91mℹ Building base64enc 0.1-3
 [0m[91mℹ Building commonmark 1.8.0
 [0m[91mℹ Building crayon 1.5.1
@@ -210,55 +208,73 @@ Installing shiny
 [0m[91mℹ Building fs 1.5.2
 [0m[91mℹ Building glue 1.6.2
 [0m[91mℹ Building jsonlite 1.8.0
-[0m[91m✔ Built base64enc 0.1-3 (4s)
+[0m[91m✔ Built base64enc 0.1-3 (7.7s)
 [0m[91mℹ Building magrittr 2.0.3
-[0m[91m✔ Built glue 1.6.2 (5.5s)
+[0m[91m✔ Built glue 1.6.2 (14.1s)
 [0m[91mℹ Building mime 0.12
-[0m[91m✔ Built fastmap 1.1.0 (7.3s)
+[0m[91m✔ Built fastmap 1.1.0 (16.6s)
 [0m[91mℹ Building R6 2.5.1
-[0m[91m✔ Built crayon 1.5.1 (8s)
+[0m[91m✔ Built crayon 1.5.1 (17.1s)
 [0m[91mℹ Building rappdirs 0.3.3
-[0m[91m✔ Built magrittr 2.0.3 (4.3s)
+[0m[91m✔ Built magrittr 2.0.3 (9.5s)
 [0m[91mℹ Building Rcpp 1.0.8.3
-[0m[91m✔ Built mime 0.12 (3.8s)
+[0m[91m✔ Built mime 0.12 (5.4s)
 [0m[91mℹ Building rlang 1.0.2
-[0m[91m✔ Built jsonlite 1.8.0 (11.4s)
+[0m[91m✔ Built rappdirs 0.3.3 (3.8s)
 [0m[91mℹ Building sourcetools 0.1.7
-[0m[91m✔ Built commonmark 1.8.0 (12.1s)
-[0m[91m✔ Built digest 0.6.29 (12.1s)
-[0m[91m✔ Built rappdirs 0.3.3 (4.1s)
+[0m[91m✔ Built jsonlite 1.8.0 (20.8s)
 [0m[91mℹ Building withr 2.5.0
-[0m[91m✔ Built R6 2.5.1 (4.8s)
+[0m[91m✔ Built R6 2.5.1 (4.4s)
 [0m[91mℹ Building xtable 1.8-4
-[0m[91m✔ Installed base64enc 0.1-3  (100ms)
-[0m[91m✔ Installed commonmark 1.8.0  (334ms)
-[0m[91m✔ Installed crayon 1.5.1  (258ms)
-[0m[91m✔ Installed digest 0.6.29  (252ms)
-[0m[91m✔ Installed fastmap 1.1.0  (289ms)
-[0m[91m✔ Installed glue 1.6.2  (355ms)
-[0m[91m✔ Installed jsonlite 1.8.0  (371ms)
-[0m[91m✔ Installed magrittr 2.0.3  (765ms)
-[0m[91m✔ Installed mime 0.12  (771ms)
-[0m[91m✔ Installed R6 2.5.1  (1.3s)
-[0m[91m✔ Installed rappdirs 0.3.3  (1.3s)
-[0m[91m✔ Built withr 2.5.0 (5.7s)
-[0m[91m✔ Installed withr 2.5.0  (67ms)
-[0m[91m✔ Built sourcetools 0.1.7 (7.3s)
-[0m[91m✔ Built xtable 1.8-4 (6.8s)
-[0m[91m✔ Installed sourcetools 0.1.7  (1s)
-[0m[91m✔ Installed xtable 1.8-4  (1.3s)
-[0m[91m✔ Built rlang 1.0.2 (27.9s)
-[0m[91m✔ Installed rlang 1.0.2  (97ms)
+[0m[91m✔ Built digest 0.6.29 (21.6s)
+[0m[91m✔ Installed base64enc 0.1-3  (370ms)
+[0m[91m✔ Installed crayon 1.5.1  (208ms)
+[0m[91m✔ Installed digest 0.6.29  (397ms)
+[0m[91m✔ Built commonmark 1.8.0 (23.8s)
+[0m[91m✔ Installed fastmap 1.1.0  (399ms)
+[0m[91m✔ Installed commonmark 1.8.0  (558ms)
+[0m[91m✔ Installed glue 1.6.2  (579ms)
+[0m[91m✔ Installed jsonlite 1.8.0  (620ms)
+[0m[91m✔ Installed magrittr 2.0.3  (626ms)
+[0m[91m✔ Installed mime 0.12  (714ms)
+[0m[91m✔ Installed R6 2.5.1  (750ms)
+[0m[91m✔ Installed rappdirs 0.3.3  (352ms)
+[0m[91m✔ Built withr 2.5.0 (14.2s)
+[0m[91m✔ Installed withr 2.5.0  (177ms)
+[0m[91m✔ Built sourcetools 0.1.7 (15.1s)
+[0m[91m✔ Installed sourcetools 0.1.7  (76ms)
+[0m[91m✔ Built xtable 1.8-4 (15.2s)
+[0m[91m✔ Installed xtable 1.8-4  (341ms)
+[0m[91m✔ Built rlang 1.0.2 (34.5s)
+[0m[91m✔ Installed rlang 1.0.2  (71ms)
 [0m[91mℹ Building cachem 1.0.6
 [0m[91mℹ Building ellipsis 0.3.2
 [0m[91mℹ Building htmltools 0.5.2
 [0m[91mℹ Building lifecycle 1.0.1
-[0m[91m✔ Built fs 1.5.2 (41.6s)
-[0m[91m✔ Installed fs 1.5.2  (86ms)
-[0m[91m✔ Built ellipsis 0.3.2 (4s)
-[0m[91m✔ Installed ellipsis 0.3.2  (69ms)
-[0m[91m✔ Built cachem 1.0.6 (5s)
-[0m[91m✔ Installed cachem 1.0.6  (64ms)
-[0m[91m✔ Built lifecycle 1.0.1 (4.8s)
-[0m[91m✔ Installed lifecycle 1.0.1  (48ms)
+[0m[91m✔ Built fs 1.5.2 (57.6s)
+[0m[91m✔ Installed fs 1.5.2  (130ms)
+[0m[91m✔ Built ellipsis 0.3.2 (4.3s)
+[0m[91m✔ Installed ellipsis 0.3.2  (162ms)
+[0m[91m✔ Built cachem 1.0.6 (7.4s)
+[0m[91m✔ Installed cachem 1.0.6  (71ms)
+[0m[91m✔ Built lifecycle 1.0.1 (7.6s)
+[0m[91m✔ Installed lifecycle 1.0.1  (129ms)
+[0m[91m✔ Built htmltools 0.5.2 (12.5s)
+[0m[91m✔ Installed htmltools 0.5.2  (105ms)
+[0m[91mℹ Building fontawesome 0.2.2
+[0m[91mℹ Building jquerylib 0.1.4
+[0m[91mℹ Building sass 0.4.1
+[0m[91m✔ Built jquerylib 0.1.4 (3.3s)
+[0m[91m✔ Installed jquerylib 0.1.4  (84ms)
+[0m[91m✔ Built fontawesome 0.2.2 (4.8s)
+[0m[91m✔ Installed fontawesome 0.2.2  (73ms)
+[0m[91m✔ Built Rcpp 1.0.8.3 (56.7s)
+[0m[91m✔ Installed Rcpp 1.0.8.3  (139ms)
+[0m[91mℹ Building later 1.3.0
+[0m[91m✔ Built later 1.3.0 (34s)
+[0m[91m✔ Installed later 1.3.0  (130ms)
+[0m[91mℹ Building promises 1.2.0.1
+[0m[91m✔ Built promises 1.2.0.1 (25.7s)
+[0m[91m✔ Installed promises 1.2.0.1  (75ms)
+[0m[91mℹ Building httpuv 1.6.5
 [0m
