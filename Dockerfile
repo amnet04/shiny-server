@@ -10,19 +10,19 @@ FROM rhub/r-minimal:4.0.5
 #################################################################################
 
 # Note: https://www.dazhuanlan.com/dalizi/topics/1690292
-RUN installr -d -t "libsodium-dev curl-dev linux-headers autoconf automake" \
-             -a libsodium shiny && \
-    DOWNLOAD_STATIC_LIBV8=1 installr  -c V8 
 
-
-RUN apk upgrade --update && \
-    apk add --no-cache --virtual .build-deps bash cmake gcc g++ git R-dev curl python3 && \
+RUN apk add --no-cache --virtual .build-deps bash cmake gcc g++ git R-dev python3 curl && \
     apk add --no-cache libstdc++ && \
     ln -s $(which python3) /usr/bin/python && \
     python -m ensurepip && pip3 install --upgrade pip && \
     mkdir /src && cd /src && \
     git clone https://github.com/velaco/shiny-server.git
- 
+
+RUN installr -d -t "libsodium-dev curl-dev linux-headers autoconf automake" \
+             -a libsodium shiny
+
+RUN DOWNLOAD_STATIC_LIBV8=1 installr -a curl -c V8
+
 
 COPY --from=amnet04/node:node8x_alpine3.14  /opt /src/shiny-server/ext/node
 
