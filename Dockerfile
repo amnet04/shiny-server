@@ -14,39 +14,38 @@ FROM rhub/r-minimal:4.0.5
 RUN apk add --no-cache --virtual .build-deps \
             cairo  \
             cairo-dev \
-            cairo-tools \
+            #cairo-tools \
             cmake \
             curl \
             curl-dev \
-            file \
+            #file \
             fontconfig \ 
             freetype-dev \
             g++ \
             gcc \
             git \
             icu-libs \
-            jpeg-dev \
-            lcms2-dev \
-            libffi \
-            librsvg \
-            librsvg-dev \
-            librsvg-lang \
+            #jpeg-dev \
+            #lcms2-dev \
+            #libffi \
+            #librsvg \
+            #librsvg-dev \
+            #librsvg-lang \
             libxml2-dev \
             libxt-dev \
-            linux-headers \
-            m4 \
+            #linux-headers \
+            #m4 \
             msttcorefonts-installer \
-            openjpeg-dev \ 
-            psmisc \
+            #openjpeg-dev \ 
+            #psmisc \
             python2 \
-            R-dev \ 
-            rrdtool \
-            tcl-dev \
-            tiff-dev \
-            tk-dev \
-            wget  \
-            zlib-dev && \
-    apk add --no-cache libstdc++ cairo-dev && \
+            R-dev && \ 
+            #rrdtool \
+            #tcl-dev \
+            #tiff-dev \
+            #tk-dev \
+            #zlib-dev && \
+    apk add --no-cache libstdc++  && \
     update-ms-fonts && fc-cache -f &&\
     #ln -s $(which python3) /usr/bin/python && \
     python -m ensurepip && pip install --upgrade pip && \
