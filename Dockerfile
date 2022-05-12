@@ -11,26 +11,54 @@ FROM rhub/r-minimal:4.0.5
 
 # Note: https://www.dazhuanlan.com/dalizi/topics/1690292
 
-RUN apk add --no-cache --virtual .build-deps cairo-dev bash cmake gcc g++ git \
-    R-dev python3 curl libxt-dev && \
-    apk add --no-cache libstdc++ && \
-    ln -s $(which python3) /usr/bin/python && \
-    python -m ensurepip && pip3 install --upgrade pip && \
+RUN apk add --no-cache --virtual .build-deps \
+            cairo  \
+            cairo-dev \
+            cairo-tools \
+            cmake \
+            curl \
+            curl-dev \
+            file \
+            fontconfig \ 
+            freetype-dev \
+            g++ \
+            gcc \
+            git \
+            icu-libs \
+            jpeg-dev \
+            lcms2-dev \
+            libffi \
+            librsvg \
+            librsvg-dev \
+            librsvg-lang \
+            libxml2-dev \
+            libxt-dev \
+            linux-headers \
+            m4 \
+            msttcorefonts-installer \
+            openjpeg-dev \ 
+            psmisc \
+            python2 \
+            R-dev \ 
+            rrdtool \
+            tcl-dev \
+            tiff-dev \
+            tk-dev \
+            wget  \
+            zlib-dev && \
+    apk add --no-cache libstdc++ cairo-dev && \
+    update-ms-fonts && fc-cache -f &&\
+    #ln -s $(which python3) /usr/bin/python && \
+    python -m ensurepip && pip install --upgrade pip && \
     mkdir /src && cd /src && \
-    apk --no-cache add msttcorefonts-installer fontconfig && \
-    update-ms-fonts && \
-    fc-cache -f && \
     git clone https://github.com/velaco/shiny-server.git
 
 RUN installr -d -t "libsodium-dev curl-dev linux-headers autoconf automake" \
              -a libsodium shiny
 
-RUN installr Cairo
-
-RUN installr rmarkdown 
-
 RUN DOWNLOAD_STATIC_LIBV8=1 installr -a curl -c V8
 
+RUN installr Cairo svglite rmarkdown 
 
 COPY --from=amnet04/node:node8x_alpine3.14  /opt /src/shiny-server/ext/node
 
@@ -74,10 +102,8 @@ RUN chmod 744 /usr/local/bin/shiny-server.sh && \
     chown -R shiny:shiny /srv/shiny-server && \
     rm -rf /src/
 
-RUN apk del .build-deps && \
-    rm /usr/bin/python
-
-RUN apk add icu-libs cairo-dev cairo  python3 py3-cairosvg
+#RUN apk del .build-deps && \
+#    rm /usr/bin/python
 
 EXPOSE 3838
 USER shiny
