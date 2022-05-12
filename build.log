@@ -1,366 +1,160 @@
-Sending build context to Docker daemon  169.5kB
-Step 1/8 : FROM rhub/r-minimal:4.0.5
+Sending build context to Docker daemon  103.4kB
+Step 1/17 : FROM rhub/r-minimal:4.0.5
  ---> 2796ae448661
-Step 2/8 : RUN installr -d -t "libsodium-dev curl-dev linux-headers autoconf automake"              -a libsodium shiny
- ---> Running in db9b1b2f89bd
-
---------------------------------------
-Adding libsodium
-Temporarily adding libsodium-dev curl-dev linux-headers autoconf automake gcc musl-dev g++
+Step 2/17 : RUN apk add --no-cache --virtual .build-deps cairo-dev bash cmake gcc g++ git     R-dev python3 curl libxt-dev &&     apk add --no-cache libstdc++ &&     ln -s $(which python3) /usr/bin/python &&     python -m ensurepip && pip3 install --upgrade pip &&     mkdir /src && cd /src &&     apk --no-cache add msttcorefonts-installer fontconfig &&     update-ms-fonts &&     fc-cache -f &&     git clone https://github.com/velaco/shiny-server.git
+ ---> Using cache
+ ---> 6b6ee039d7fc
+Step 3/17 : RUN installr -d -t "libsodium-dev curl-dev linux-headers autoconf automake"              -a libsodium shiny
+ ---> Using cache
+ ---> a1ec4dca7660
+Step 4/17 : RUN installr Cairo
+ ---> Using cache
+ ---> d4e53e7e1a35
+Step 5/17 : RUN installr rmarkdown
+ ---> Using cache
+ ---> de02a92f5796
+Step 6/17 : RUN DOWNLOAD_STATIC_LIBV8=1 installr -a curl -c V8
+ ---> Using cache
+ ---> c7cd1be7d715
+Step 7/17 : COPY --from=amnet04/node:node8x_alpine3.14  /opt /src/shiny-server/ext/node
+ ---> Using cache
+ ---> c58c5e576b3e
+Step 8/17 : RUN cp /src/shiny-server/ext/node/bin/node /src/shiny-server/ext/node/bin/shiny-server &&     rm /src/shiny-server/ext/node/bin/npm &&     ln -s /src/shiny-server/ext/node/bin/node /usr/local/bin/ &&     cd /src/shiny-server &&     mkdir tmp &&     cd tmp &&     cmake -DCMAKE_INSTALL_PREFIX=/usr/local ../ &&     make && mkdir ../build &&     (cd .. && ./bin/npm --python="/usr/bin/python"                         --nodedir="/src/shiny-server/ext/node" install) &&     (cd .. && ./bin/npm --python="/usr/bin/python"                         --nodedir="/src/shiny-server/ext/node" audit fix) &&     (cd .. && ./bin/node               ./ext/node/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js               --python="/usr/bin/python"               --nodedir="/src/shiny-server/ext/node" rebuild) &&     make install
+ ---> Using cache
+ ---> 84f7b4220cb3
+Step 9/17 : COPY config/shiny-server.conf /etc/shiny-server/shiny-server.conf
+ ---> Using cache
+ ---> 1148f713da03
+Step 10/17 : COPY scripts/shiny-server.sh /usr/local/bin/shiny-server.sh
+ ---> Using cache
+ ---> 35e35fbede84
+Step 11/17 : RUN ln -s /usr/local/shiny-server/bin/shiny-server /usr/local/bin/shiny-server &&      addgroup -g 1000 -S shiny &&      adduser -u 1000 -D -S -G shiny shiny &&      mkdir -p /srv/shiny-server &&      mkdir -p /var/lib/shiny-server &&      mkdir -p /var/log/shiny-server &&      mkdir -p /etc/shiny-server &&      chown -R shiny:shiny /srv/shiny-server &&      chown -R shiny:shiny /var/lib/shiny-server &&      chown -R shiny:shiny /var/log/shiny-server
+ ---> Using cache
+ ---> 9c1bb2ed77dd
+Step 12/17 : RUN chmod 744 /usr/local/bin/shiny-server.sh &&     chown shiny:shiny /usr/local/bin/shiny-server.sh  &&     mv /src/shiny-server/samples/sample-apps /srv/shiny-server/ &&     mv /src/shiny-server/samples/welcome.html /srv/shiny-server/ &&     chown -R shiny:shiny /srv/shiny-server &&     rm -rf /src/
+ ---> Using cache
+ ---> 2c71eb6decb7
+Step 13/17 : RUN apk del .build-deps &&     rm /usr/bin/python
+ ---> Using cache
+ ---> 0c0f320ba78d
+Step 14/17 : RUN apk add icu-libs cairo-dev cairo  python3 py3-cairosvg
+ ---> Running in 2d0651f6cbc6
 fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/main/x86_64/APKINDEX.tar.gz
 fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86_64/APKINDEX.tar.gz
-(1/29) Upgrading libcrypto1.1 (1.1.1l-r0 -> 1.1.1o-r0)
-(2/29) Upgrading libssl1.1 (1.1.1l-r0 -> 1.1.1o-r0)
-(3/29) Upgrading zlib (1.2.11-r3 -> 1.2.12-r1)
-(4/29) Installing m4 (1.4.18-r2)
-(5/29) Installing perl (5.32.1-r0)
-(6/29) Installing autoconf (2.71-r0)
-(7/29) Installing automake (1.16.3-r0)
-(8/29) Installing pkgconf (1.7.4-r0)
-(9/29) Installing openssl-dev (1.1.1o-r0)
-(10/29) Installing nghttp2-dev (1.43.0-r0)
-(11/29) Installing zlib-dev (1.2.12-r1)
-(12/29) Installing brotli-dev (1.0.9-r5)
-(13/29) Upgrading libcurl (7.79.1-r0 -> 7.79.1-r1)
-(14/29) Installing curl-dev (7.79.1-r1)
-(15/29) Installing binutils (2.35.2-r2)
-(16/29) Installing libgomp (10.3.1_git20210424-r2)
-(17/29) Installing libatomic (10.3.1_git20210424-r2)
-(18/29) Installing libgphobos (10.3.1_git20210424-r2)
-(19/29) Installing gmp (6.2.1-r1)
-(20/29) Installing isl22 (0.22-r0)
-(21/29) Installing mpfr4 (4.1.0-r0)
-(22/29) Installing mpc1 (1.2.1-r0)
-(23/29) Installing gcc (10.3.1_git20210424-r2)
-(24/29) Installing musl-dev (1.2.2-r3)
-(25/29) Installing libc-dev (0.7.2-r3)
-(26/29) Installing g++ (10.3.1_git20210424-r2)
-(27/29) Installing libsodium (1.0.18-r0)
-(28/29) Installing libsodium-dev (1.0.18-r0)
-(29/29) Installing linux-headers (5.10.41-r0)
+(1/93) Installing libxau (1.0.9-r0)
+(2/93) Installing libmd (1.0.3-r0)
+(3/93) Installing libbsd (0.11.3-r0)
+(4/93) Installing libxdmcp (1.1.3-r0)
+(5/93) Installing libxcb (1.14-r2)
+(6/93) Installing libx11 (1.7.2-r0)
+(7/93) Installing libxext (1.3.4-r0)
+(8/93) Installing libxrender (0.9.10-r3)
+(9/93) Installing pixman (0.40.0-r2)
+(10/93) Installing cairo (1.16.0-r3)
+(11/93) Installing libffi (3.3-r2)
+(12/93) Installing libintl (0.21-r0)
+(13/93) Installing libblkid (2.37.4-r0)
+(14/93) Installing libmount (2.37.4-r0)
+(15/93) Installing glib (2.68.3-r0)
+(16/93) Installing cairo-tools (1.16.0-r3)
+(17/93) Installing pkgconf (1.7.4-r0)
+(18/93) Installing expat-dev (2.4.7-r0)
+(19/93) Installing brotli-dev (1.0.9-r5)
+(20/93) Installing zlib-dev (1.2.12-r1)
+(21/93) Installing libpng-dev (1.6.37-r1)
+(22/93) Installing freetype-dev (2.10.4-r2)
+(23/93) Installing blkid (2.37.4-r0)
+(24/93) Installing libcap-ng (0.8.2-r0)
+(25/93) Installing setpriv (2.37.4-r0)
+(26/93) Installing libsmartcols (2.37.4-r0)
+(27/93) Installing findmnt (2.37.4-r0)
+(28/93) Installing mcookie (2.37.4-r0)
+(29/93) Installing hexdump (2.37.4-r0)
+(30/93) Installing lsblk (2.37.4-r0)
+(31/93) Installing libfdisk (2.37.4-r0)
+(32/93) Installing sfdisk (2.37.4-r0)
+(33/93) Installing cfdisk (2.37.4-r0)
+(34/93) Installing partx (2.37.4-r0)
+(35/93) Installing flock (2.37.4-r0)
+(36/93) Installing logger (2.37.4-r0)
+(37/93) Installing uuidgen (2.37.4-r0)
+(38/93) Installing libeconf (0.3.8-r1)
+(39/93) Installing util-linux (2.37.4-r0)
+(40/93) Installing util-linux-dev (2.37.4-r0)
+(41/93) Installing fontconfig-dev (2.13.1-r4)
+(42/93) Installing xorgproto (2021.4-r0)
+(43/93) Installing libxau-dev (1.0.9-r0)
+(44/93) Installing xcb-proto (1.14.1-r2)
+(45/93) Installing libxdmcp-dev (1.1.3-r0)
+(46/93) Installing libxcb-dev (1.14-r2)
+(47/93) Installing xtrans (1.4.0-r1)
+(48/93) Installing libx11-dev (1.7.2-r0)
+(49/93) Installing libxext-dev (1.3.4-r0)
+(50/93) Installing libxrender-dev (0.9.10-r3)
+(51/93) Installing pixman-dev (0.40.0-r2)
+(52/93) Installing util-macros (1.19.3-r0)
+(53/93) Installing xcb-util (0.4.0-r3)
+(54/93) Installing xcb-util-dev (0.4.0-r3)
+(55/93) Installing cairo-gobject (1.16.0-r3)
+(56/93) Installing gdbm (1.19-r0)
+(57/93) Installing mpdecimal (2.5.1-r1)
+(58/93) Installing sqlite-libs (3.35.5-r0)
+(59/93) Installing python3 (3.9.5-r2)
+(60/93) Installing gettext-asprintf (0.21-r0)
+(61/93) Installing gettext-libs (0.21-r0)
+(62/93) Installing libxml2 (2.9.14-r0)
+(63/93) Installing gettext (0.21-r0)
+(64/93) Installing gettext-dev (0.21-r0)
+(65/93) Installing bzip2-dev (1.0.8-r1)
+(66/93) Installing libxml2-utils (2.9.14-r0)
+(67/93) Installing libgpg-error (1.42-r0)
+(68/93) Installing libgcrypt (1.9.4-r0)
+(69/93) Installing libxslt (1.1.35-r0)
+(70/93) Installing docbook-xml (4.5-r6)
+Executing docbook-xml-4.5-r6.post-install
+(71/93) Installing docbook-xsl (1.79.2-r2)
+Executing docbook-xsl-1.79.2-r2.post-install
+(72/93) Installing linux-headers (5.10.41-r0)
+(73/93) Installing libffi-dev (3.3-r2)
+(74/93) Installing libpcre16 (8.44-r0)
+(75/93) Installing libpcre32 (8.44-r0)
+(76/93) Installing pcre-dev (8.44-r0)
+(77/93) Installing glib-dev (2.68.3-r0)
+(78/93) Installing cairo-dev (1.16.0-r3)
+(79/93) Installing icu-libs (67.1-r2)
+(80/93) Installing py3-webencodings (0.5.1-r4)
+(81/93) Installing py3-tinycss2 (1.1.0-r1)
+(82/93) Installing py3-cssselect2 (0.4.1-r1)
+(83/93) Installing py3-defusedxml (0.7.1-r1)
+(84/93) Installing py3-cparser (2.20-r1)
+(85/93) Installing py3-cffi (1.14.5-r1)
+(86/93) Installing shared-mime-info (2.1-r0)
+(87/93) Installing libjpeg-turbo (2.1.0-r0)
+(88/93) Installing libwebp (1.2.0-r2)
+(89/93) Installing zstd-libs (1.4.9-r1)
+(90/93) Installing tiff (4.3.0-r0)
+(91/93) Installing gdk-pixbuf (2.42.6-r0)
+(92/93) Installing py3-cairocffi (1.2.0-r2)
+(93/93) Installing py3-cairosvg (2.5.2-r1)
 Executing busybox-1.33.1-r6.trigger
-Executing ca-certificates-20211220-r0.trigger
-OK: 249 MiB in 57 packages
-
---------------------------------------
-Installing pak (if needed)
-[91mtrying URL 'https://r-lib.github.io/p/pak/devel/source/linux-musl/x86_64/src/contrib/../../../../../linux/x86_64/pak_0.3.0.9000_R-4-0_x86_64-linux.tar.gz'
-[0m[91mContent type 'application/gzip' length 7645276 bytes (7.3 MB)
-[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=
-downloaded 7.3 MB
-
-[0m[91m* installing *binary* package ‘pak’ ...
-[0m[91m* DONE (pak)
-[0m[91m
-The downloaded source packages are in
-	‘/tmp/RtmpaGOEdm/downloaded_packages’
-[0m[91mUpdating HTML index of packages in '.Library'
-[0m[91mMaking 'packages.html' ...[0m[91m done
-[0m
---------------------------------------
-Installing shiny
-[91m
-[0m[91m✔ Updated metadata database: 2.57 MB in 6 files.
-[0m[91m
-[0m[91mℹ Updating metadata database
-[0m[91m✔ Updating metadata database ... done
-[0m[91m
-[0m[91m 
-[0m[91m→ Will install 29 packages.
-[0m[91m→ Will download 29 CRAN packages (24.99 MB).
-[0m[91m+ R6            2.5.1   [bld][dl] (63.42 kB)
-+ Rcpp          1.0.8.3 [bld][cmp][dl] (3.09 MB)
-+ base64enc     0.1-3   [bld][cmp][dl] (7.83 kB)
-+ bslib         0.3.1   [bld][dl] (4.91 MB)
-+ cachem        1.0.6   [bld][cmp][dl] (25.41 kB)
-+ commonmark    1.8.0   [bld][cmp][dl] (139.48 kB)
-+ crayon        1.5.1   [bld][dl] (40.18 kB)
-+ digest        0.6.29  [bld][cmp][dl] (162.78 kB)
-+ ellipsis      0.3.2   [bld][cmp][dl] (8.07 kB)
-+ fastmap       1.1.0   [bld][cmp][dl] (44.28 kB)
-+ fontawesome   0.2.2   [bld][dl] (1.12 MB)
-+ fs            1.5.2   [bld][cmp][dl] (793.63 kB)
-+ glue          1.6.2   [bld][cmp][dl] (106.51 kB)
-+ htmltools     0.5.2   [bld][cmp][dl] (124.51 kB)
-+ httpuv        1.6.5   [bld][cmp][dl] (1.82 MB)
-+ jquerylib     0.1.4   [bld][dl] (520.21 kB)
-+ jsonlite      1.8.0   [bld][cmp][dl] (1.05 MB)
-+ later         1.3.0   [bld][cmp][dl] (63.78 kB)
-+ lifecycle     1.0.1   [bld][dl] (99.72 kB)
-+ magrittr      2.0.3   [bld][cmp][dl] (267.07 kB)
-+ mime          0.12    [bld][cmp][dl] (12.56 kB)
-+ promises      1.2.0.1 [bld][cmp][dl] (3.12 MB)
-+ rappdirs      0.3.3   [bld][cmp][dl] (12.29 kB)
-+ rlang         1.0.2   [bld][cmp][dl] (724.83 kB)
-+ sass          0.4.1   [bld][cmp][dl] (3.02 MB)
-+ shiny         1.7.1   [bld][dl] (2.96 MB)
-+ sourcetools   0.1.7   [bld][cmp][dl] (24.16 kB)
-+ withr         2.5.0   [bld][dl] (102.09 kB)
-+ xtable        1.8-4   [bld][dl] (564.59 kB)
-[0m[91mℹ Getting 29 pkgs (24.99 MB)
-[0m[91m✔ Got base64enc 0.1-3 (source) (7.83 kB)
-[0m[91m✔ Got cachem 1.0.6 (source) (25.41 kB)
-[0m[91m✔ Got ellipsis 0.3.2 (source) (8.07 kB)
-[0m[91m✔ Got fastmap 1.1.0 (source) (44.28 kB)
-[0m[91m✔ Got glue 1.6.2 (source) (106.51 kB)
-[0m[91m✔ Got htmltools 0.5.2 (source) (124.51 kB)
-[0m[91m✔ Got lifecycle 1.0.1 (source) (99.72 kB)
-[0m[91m✔ Got jquerylib 0.1.4 (source) (520.21 kB)
-[0m[91m✔ Got magrittr 2.0.3 (source) (267.07 kB)
-[0m[91m✔ Got mime 0.12 (source) (12.56 kB)
-[0m[91m✔ Got R6 2.5.1 (source) (63.42 kB)
-[0m[91m✔ Got fs 1.5.2 (source) (793.63 kB)
-[0m[91m✔ Got jsonlite 1.8.0 (source) (1.05 MB)
-[0m[91m✔ Got rappdirs 0.3.3 (source) (12.29 kB)
-[0m[91m✔ Got rlang 1.0.2 (source) (724.83 kB)
-[0m[91m✔ Got fontawesome 0.2.2 (source) (1.12 MB)
-[0m[91m✔ Got sourcetools 0.1.7 (source) (24.16 kB)
-[0m[91m✔ Got withr 2.5.0 (source) (102.09 kB)
-[0m[91m✔ Got bslib 0.3.1 (source) (4.91 MB)
-[0m[91m✔ Got commonmark 1.8.0 (source) (139.48 kB)
-[0m[91m✔ Got crayon 1.5.1 (source) (40.18 kB)
-[0m[91m✔ Got digest 0.6.29 (source) (162.78 kB)
-[0m[91m✔ Got xtable 1.8-4 (source) (564.59 kB)
-[0m[91m✔ Got later 1.3.0 (source) (63.78 kB)
-[0m[91m✔ Got promises 1.2.0.1 (source) (3.12 MB)
-[0m[91m✔ Got httpuv 1.6.5 (source) (1.82 MB)
-[0m[91m✔ Got Rcpp 1.0.8.3 (source) (3.09 MB)
-[0m[91m✔ Got shiny 1.7.1 (source) (2.96 MB)
-[0m[91m✔ Got sass 0.4.1 (source) (3.02 MB)
-[0m[91mℹ Building base64enc 0.1-3
-[0m[91mℹ Building commonmark 1.8.0
-[0m[91mℹ Building crayon 1.5.1
-[0m[91mℹ Building digest 0.6.29
-[0m[91mℹ Building fastmap 1.1.0
-[0m[91mℹ Building fs 1.5.2
-[0m[91mℹ Building glue 1.6.2
-[0m[91mℹ Building jsonlite 1.8.0
-[0m[91m✔ Built base64enc 0.1-3 (6.1s)
-[0m[91mℹ Building magrittr 2.0.3
-[0m[91m✔ Built glue 1.6.2 (11s)
-[0m[91mℹ Building mime 0.12
-[0m[91m✔ Built fastmap 1.1.0 (14.7s)
-[0m[91mℹ Building R6 2.5.1
-[0m[91m✔ Built crayon 1.5.1 (15.3s)
-[0m[91mℹ Building rappdirs 0.3.3
-[0m[91m✔ Built magrittr 2.0.3 (10.4s)
-[0m[91mℹ Building Rcpp 1.0.8.3
-[0m[91m✔ Built mime 0.12 (8.3s)
-[0m[91mℹ Building rlang 1.0.2
-[0m[91m✔ Built digest 0.6.29 (21.4s)
-[0m[91mℹ Building sourcetools 0.1.7
-[0m[91m✔ Built rappdirs 0.3.3 (5.8s)
-[0m[91mℹ Building withr 2.5.0
-[0m[91m✔ Built jsonlite 1.8.0 (21.7s)
-[0m[91mℹ Building xtable 1.8-4
-[0m[91m✔ Built R6 2.5.1 (7.2s)
-[0m[91m✔ Installed base64enc 0.1-3  (210ms)
-[0m[91m✔ Installed crayon 1.5.1  (800ms)
-[0m[91m✔ Installed digest 0.6.29  (267ms)
-[0m[91m✔ Built commonmark 1.8.0 (25.1s)
-[0m[91m✔ Installed fastmap 1.1.0  (343ms)
-[0m[91m✔ Installed commonmark 1.8.0  (701ms)
-[0m[91m✔ Installed glue 1.6.2  (633ms)
-[0m[91m✔ Installed jsonlite 1.8.0  (717ms)
-[0m[91m✔ Installed magrittr 2.0.3  (668ms)
-[0m[91m✔ Installed mime 0.12  (533ms)
-[0m[91m✔ Installed R6 2.5.1  (570ms)
-[0m[91m✔ Installed rappdirs 0.3.3  (545ms)
-[0m[91m✔ Built withr 2.5.0 (9.8s)
-[0m[91m✔ Installed withr 2.5.0  (92ms)
-[0m[91m✔ Built sourcetools 0.1.7 (10.8s)
-[0m[91m✔ Installed sourcetools 0.1.7  (726ms)
-[0m[91m✔ Built xtable 1.8-4 (10.9s)
-[0m[91m✔ Installed xtable 1.8-4  (69ms)
-[0m[91m✔ Built rlang 1.0.2 (34.6s)
-[0m[91m✔ Installed rlang 1.0.2  (346ms)
-[0m[91mℹ Building cachem 1.0.6
-[0m[91mℹ Building ellipsis 0.3.2
-[0m[91mℹ Building htmltools 0.5.2
-[0m[91mℹ Building lifecycle 1.0.1
-[0m[91m✔ Built ellipsis 0.3.2 (9.9s)
-[0m[91m✔ Installed ellipsis 0.3.2  (128ms)
-[0m[91m✔ Built cachem 1.0.6 (12.4s)
-[0m[91m✔ Installed cachem 1.0.6  (337ms)
-[0m[91m✔ Built lifecycle 1.0.1 (12.1s)
-[0m[91m✔ Installed lifecycle 1.0.1  (665ms)
-[0m[91m✔ Built htmltools 0.5.2 (18.7s)
-[0m[91m✔ Installed htmltools 0.5.2  (132ms)
-[0m[91mℹ Building fontawesome 0.2.2
-[0m[91mℹ Building jquerylib 0.1.4
-[0m[91m✔ Built jquerylib 0.1.4 (8.5s)
-[0m[91m✔ Installed jquerylib 0.1.4  (155ms)
-[0m[91m✔ Built fs 1.5.2 (1m 26.2s)
-[0m[91m✔ Installed fs 1.5.2  (223ms)
-[0m[91mℹ Building sass 0.4.1
-[0m[91m✔ Built fontawesome 0.2.2 (12.5s)
-[0m[91m✔ Installed fontawesome 0.2.2  (96ms)
-[0m[91m✔ Built Rcpp 1.0.8.3 (1m 13.1s)
-[0m[91m✔ Installed Rcpp 1.0.8.3  (154ms)
-[0m[91mℹ Building later 1.3.0
-[0m[91m✔ Built later 1.3.0 (29.9s)
-[0m[91m✔ Installed later 1.3.0  (1.1s)
-[0m[91mℹ Building promises 1.2.0.1
-[0m[91m✔ Built promises 1.2.0.1 (20.3s)
-[0m[91m✔ Installed promises 1.2.0.1  (77ms)
-[0m[91mℹ Building httpuv 1.6.5
-[0m[91m✔ Built httpuv 1.6.5 (3m 17.9s)
-[0m[91m✔ Installed httpuv 1.6.5  (251ms)
-[0m[91m✔ Built sass 0.4.1 (4m 20.9s)
-[0m[91m✔ Installed sass 0.4.1  (108ms)
-[0m[91mℹ Building bslib 0.3.1
-[0m[91m✔ Built bslib 0.3.1 (10.3s)
-[0m[91m✔ Installed bslib 0.3.1  (244ms)
-[0m[91mℹ Building shiny 1.7.1
-[0m[91m✔ Built shiny 1.7.1 (1m 6.1s)
-[0m[91m✔ Installed shiny 1.7.1  (192ms)
-[0m[91m✔ 1 pkg + 28 deps: added 29, dld 29 (24.99 MB) [7m 38.1s]
-[0m
---------------------------------------
-Cleaning up pak cache
-[91mℹ Cleaning up cache directory '/root/.cache/R/pkgcache/_metadata'.
-[0m
---------------------------------------
-Removing pak
-[91mRemoving package from ‘/usr/local/lib/R/library’
-(as ‘lib’ is unspecified)
-[0m[91mUpdating HTML index of packages in '.Library'
-[0m[91mMaking 'packages.html' ...[0m[91m done
-[0m
---------------------------------------
-Removing libsodium-dev curl-dev linux-headers autoconf automake gcc musl-dev g++
-[91mWARNING: Ignoring https://dl-cdn.alpinelinux.org/alpine/v3.14/main: No such file or directory
-WARNING: Ignoring https://dl-cdn.alpinelinux.org/alpine/v3.14/community: No such file or directory
-[0m(1/24) Purging autoconf (2.71-r0)
-(2/24) Purging m4 (1.4.18-r2)
-(3/24) Purging automake (1.16.3-r0)
-(4/24) Purging perl (5.32.1-r0)
-(5/24) Purging curl-dev (7.79.1-r1)
-(6/24) Purging openssl-dev (1.1.1o-r0)
-(7/24) Purging nghttp2-dev (1.43.0-r0)
-(8/24) Purging zlib-dev (1.2.12-r1)
-(9/24) Purging brotli-dev (1.0.9-r5)
-(10/24) Purging g++ (10.3.1_git20210424-r2)
-(11/24) Purging gcc (10.3.1_git20210424-r2)
-(12/24) Purging binutils (2.35.2-r2)
-(13/24) Purging libatomic (10.3.1_git20210424-r2)
-(14/24) Purging libgomp (10.3.1_git20210424-r2)
-(15/24) Purging libgphobos (10.3.1_git20210424-r2)
-(16/24) Purging libc-dev (0.7.2-r3)
-(17/24) Purging musl-dev (1.2.2-r3)
-(18/24) Purging libsodium-dev (1.0.18-r0)
-(19/24) Purging linux-headers (5.10.41-r0)
-(20/24) Purging pkgconf (1.7.4-r0)
-(21/24) Purging mpc1 (1.2.1-r0)
-(22/24) Purging mpfr4 (4.1.0-r0)
-(23/24) Purging isl22 (0.22-r0)
-(24/24) Purging gmp (6.2.1-r1)
-Executing busybox-1.33.1-r6.trigger
-OK: 17 MiB in 33 packages
-
---------------------------------------
-Cleaning up cache
-Removing intermediate container db9b1b2f89bd
- ---> dfb6ce31780e
-Step 3/8 : RUN DOWNLOAD_STATIC_LIBV8=1 installr -a curl -c V8
- ---> Running in 49fa86ac7506
-
---------------------------------------
-Adding curl gcc musl-dev g++
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/main/x86_64/APKINDEX.tar.gz
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86_64/APKINDEX.tar.gz
-(1/13) Installing curl (7.79.1-r1)
-(2/13) Installing binutils (2.35.2-r2)
-(3/13) Installing libgomp (10.3.1_git20210424-r2)
-(4/13) Installing libatomic (10.3.1_git20210424-r2)
-(5/13) Installing libgphobos (10.3.1_git20210424-r2)
-(6/13) Installing gmp (6.2.1-r1)
-(7/13) Installing isl22 (0.22-r0)
-(8/13) Installing mpfr4 (4.1.0-r0)
-(9/13) Installing mpc1 (1.2.1-r0)
-(10/13) Installing gcc (10.3.1_git20210424-r2)
-(11/13) Installing musl-dev (1.2.2-r3)
-(12/13) Installing libc-dev (0.7.2-r3)
-(13/13) Installing g++ (10.3.1_git20210424-r2)
-Executing busybox-1.33.1-r6.trigger
-OK: 198 MiB in 46 packages
-
---------------------------------------
-Installing pak (if needed)
-[91mtrying URL 'https://r-lib.github.io/p/pak/devel/source/linux-musl/x86_64/src/contrib/../../../../../linux/x86_64/pak_0.3.0.9000_R-4-0_x86_64-linux.tar.gz'
-[0m[91mContent type 'application/gzip' length 7645276 bytes (7.3 MB)
-[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=[0m[91m=
-downloaded 7.3 MB
-
-[0m[91m* installing *binary* package ‘pak’ ...
-[0m[91m* DONE (pak)
-[0m[91m
-The downloaded source packages are in
-	‘/tmp/RtmpnnoEoe/downloaded_packages’
-[0m[91mUpdating HTML index of packages in '.Library'
-[0m[91mMaking 'packages.html' ...[0m[91m done
-[0m
---------------------------------------
-Installing V8
-[91m
-[0m[91m✔ Updated metadata database: 2.57 MB in 6 files.
-[0m[91m
-[0m[91mℹ Updating metadata database
-[0m[91m✔ Updating metadata database ... done
-[0m[91m
-[0m[91m 
-[0m[91m→ Will install 2 packages.
-[0m[91m→ Will download 2 CRAN packages (1.47 MB).
-[0m[91m+ V8     4.1.0 [bld][cmp][dl] (681.02 kB)
-+ curl   4.3.2 [bld][cmp][dl] (793.35 kB)
-[0m[91mℹ Getting 2 pkgs (1.47 MB)
-[0m[91m✔ Got curl 4.3.2 (source) (793.35 kB)
-[0m[91m✔ Got V8 4.1.0 (source) (681.02 kB)
-[0m[91mℹ Building curl 4.3.2
-[0m[91m✖ Failed to build curl 4.3.2
-[0m[91m
-[0m[91mError: [0m[91m<callr_remote_error: Failed to build source package 'curl'>
- in process 49 
--->
-Failed to build source package 'curl', stdout + stderr:
-
-OE> * installing *source* package ‘curl’ ...
-OE> ** package ‘curl’ successfully unpacked and MD5 sums checked
-OE> staged installation is only possible with locking
-OE> ** using non-staged installation
-OE> Using PKG_CFLAGS=
-OE> Using PKG_LIBS=-lcurl
-OE> ------------------------- ANTICONF ERROR ---------------------------
-OE> Configuration failed because libcurl was not found. Try installing:
-OE>  * deb: libcurl4-openssl-dev (Debian, Ubuntu, etc)
-OE>  * rpm: libcurl-devel (Fedora, CentOS, RHEL)
-OE>  * csw: libcurl_dev (Solaris)
-OE> If libcurl is already installed, check that 'pkg-config' is in your
-OE> PATH and PKG_CONFIG_PATH contains a libcurl.pc file. If pkg-config
-OE> is unavailable you can set INCLUDE_DIR and LIB_DIR manually via:
-OE> R CMD INSTALL --configure-vars='INCLUDE_DIR=... LIB_DIR=...'
-OE> --------------------------------------------------------------------
-OE> ERROR: configuration failed for package ‘curl’
-OE> * removing ‘/tmp/RtmpIiDGPl/pkg-lib31134e7568/curl’
-[0m[91m
- Stack trace:
-
- 12. (function (...)  ...
- 13. base:::withCallingHandlers(cli_message = function(msg) { ...
- 14. get("pkg_install_do_plan", asNamespace("pak"))(...)
- 15. pkgdepends::install_package_plan(plan = plan, lib = lib, num_workers = num_ ...
- 16. base:::withCallingHandlers({ ...
- 17. pkgdepends:::handle_events(state, events)
- 18. pkgdepends:::handle_event(state, i)
- 19. pkgdepends:::stop_task(state, worker)
- 20. pkgdepends:::stop_task_build(state, worker)
- 21. base:::throw(new_pkg_build_error("Failed to build source package {pkg}",  ...
- 22. base:::signalCondition(cond)
- 23. (function (e)  ...
- 24. base:::stop(e)
- 25. (function (e)  ...
-
- x Failed to build source package 'curl' 
-
-[0m[91mExecution halted
-[0m
+Executing glib-2.68.3-r0.trigger
+No schema files found: doing nothing.
+Executing shared-mime-info-2.1-r0.trigger
+Executing gdk-pixbuf-2.42.6-r0.trigger
+OK: 356 MiB in 150 packages
+Removing intermediate container 2d0651f6cbc6
+ ---> 573dad340dc1
+Step 15/17 : EXPOSE 3838
+ ---> Running in b441c3d6f456
+Removing intermediate container b441c3d6f456
+ ---> e501529d5213
+Step 16/17 : USER shiny
+ ---> Running in 19adcd0c9cdf
+Removing intermediate container 19adcd0c9cdf
+ ---> 6852c0d72fa8
+Step 17/17 : CMD ["shiny-server.sh"]
+ ---> Running in 801f5781ea0a
+Removing intermediate container 801f5781ea0a
+ ---> 3902d32865f6
+Successfully built 3902d32865f6
+Successfully tagged amnet04/shiny-server:0.1
