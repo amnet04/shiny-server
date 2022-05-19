@@ -64,6 +64,8 @@ COPY config/shiny-server.conf /etc/shiny-server/shiny-server.conf
 
 COPY scripts/shiny-server.sh /usr/local/bin/shiny-server.sh  
 
+COPY scripts/tailer.sh  /usr/local/bin/tailer.sh
+
 COPY --from=0 /usr/local /usr/local
 
 COPY --from=0 /src/shiny-server/samples/sample-apps /srv/shiny-server/sample-apps
@@ -75,7 +77,7 @@ COPY ./samples/server.R /srv/shiny-server/sample-apps/hello/server.R
 COPY ./samples/index.Rmd /srv/shiny-server/sample-apps/rmd/index.Rmd
   
 RUN ln -s /usr/local/shiny-server/bin/shiny-server /usr/local/bin/shiny-server && \
-    apk add --no-cache libstdc++ cairo-dev curl icu-libs ttf-freefont && \
+    apk add --no-cache libstdc++ cairo-dev curl icu-libs ttf-freefont  && \
     fc-cache && \
     addgroup -g 1000 -S shiny && \ 
     adduser -u 1000 -h /srv/shiny-server -S -G shiny shiny && \
@@ -84,7 +86,9 @@ RUN ln -s /usr/local/shiny-server/bin/shiny-server /usr/local/bin/shiny-server &
     chown -R shiny:shiny /var/lib/shiny-server && \
     chown -R shiny:shiny /var/log/shiny-server && \
     chmod 744 /usr/local/bin/shiny-server.sh && \
+    chmod 744 /usr/local/bin/tailer.sh && \
     chown shiny:shiny /usr/local/bin/shiny-server.sh  && \
+    chown shiny:shiny /usr/local/bin/tailer.sh && \
     chown -R shiny:shiny /srv/shiny-server && \
     rm -rf /src && \
     rm -rf .cache && \
@@ -93,6 +97,7 @@ RUN ln -s /usr/local/shiny-server/bin/shiny-server /usr/local/bin/shiny-server &
     rm -rf /usr/lib/python2.7 && \
     rm -rf /opt
 
+WORKDIR /srv/shiny-server/
 EXPOSE 3838
 USER shiny
 CMD ["shiny-server.sh"]
